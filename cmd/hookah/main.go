@@ -20,11 +20,10 @@ type (
 	}
 
 	repo struct {
-		Type   string `json:"type"` //github or gitlab
-		Name   string `json:"name"`
-		Branch string `json:"branch"`
-		Tasks  []task `json:"tasks"`
-		Notify notify `json:"notify"`
+		Name   string   `json:"name"`
+		Branch string   `json:"branch"`
+		Tasks  taskList `json:"tasks"`
+		Notify notify   `json:"notify"`
 	}
 
 	// notify may contain alternative notifications
@@ -44,6 +43,8 @@ type (
 		ChatID int    `json:"chat_id"`
 		Token  string `json:"token"`
 	}
+
+	taskList []task
 )
 
 const (
@@ -61,11 +62,11 @@ var (
 
 func main() {
 	flag.Parse()
-	loadConf(*path)
+	loadConf()
 
 	// Add handlers
-	mux.HandleFunc(`/gitlab`, gitHandler(`gitlab`))
-	mux.HandleFunc(`/github`, gitHandler(`github`))
+	mux.HandleFunc(`/gitlab`, gitHandler)
+	mux.HandleFunc(`/github`, gitHandler)
 
 	address := sprintf("%s:%d", config.Host, config.Port)
 	log.Printf("Listening on %s/gitlab and %[1]s/github", address)
@@ -76,6 +77,7 @@ func main() {
 func (t task) Run() {
 	var (
 		out []byte
+
 		err error
 	)
 
@@ -88,6 +90,12 @@ func (t task) Run() {
 		logf("ERROR: %s -- RUNNING: %s %s WITH ARGS: %+v", err, t.Cwd, t.Cmd, t.Args)
 	}
 	logf("OUTPUT: %v", out)
+}
+
+func (tl taskList) Run() {
+	for _, t := range tl {
+		t.Run()
+	}
 }
 
 func logf(f string, args ...interface{}) {
