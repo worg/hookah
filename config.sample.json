@@ -1,0 +1,39 @@
+{
+    "host": "127.0.0.1",
+    "port": 8080,
+    "repos": [
+        {
+            "name": "hookah",
+            "branch": "*",
+            "tasks" : [
+                {
+                    "cwd": "/home/user/hookah/",
+                    "cmd": "test.sh",
+                    "args": ["prod", "dev"]
+                }
+            ]
+        },
+        {
+            "name": "hookah",
+            "branch": "master",
+            "tasks" : [
+                {
+                    "cwd": "/home/user/hookah/repo",
+                    "cmd": "git",
+                    "args": ["pull"]
+                },
+                {
+                    "cwd": "/home/user/hookah/",
+                    "cmd": "test.sh",
+                    "args": ["prod", "dev"]
+                }
+            ],
+            "notify": {
+                "telegram" : {
+                    "token": "bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
+                    "chat_id": 123456
+                }
+            }
+        }
+    ]
+}
