@@ -43,7 +43,7 @@ func loadConf() {
 	}
 
 	decodeCfg(configFile)
-	logf("Loaded config file file: %s\n", configFile)
+	log.Printf("Loaded config file file: %s\n", configFile)
 }
 
 func decodeCfg(file string) {
@@ -59,6 +59,4 @@ func decodeCfg(file string) {
 	if err = json.Unmarshal(data, &config); err != nil {
 		log.Fatal(`Error decoding file: `, err)
 	}
-
-	logf("%+v", config)
 }

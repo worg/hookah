@@ -77,7 +77,6 @@ func main() {
 func (t task) Run() {
 	var (
 		out []byte
-
 		err error
 	)
 
@@ -89,7 +88,7 @@ func (t task) Run() {
 	if out, err = cmd.CombinedOutput(); err != nil {
 		logf("ERROR: %s -- RUNNING: %s %s WITH ARGS: %+v", err, t.Cwd, t.Cmd, t.Args)
 	}
-	logf("OUTPUT: %v", out)
+	logf("TASK: %s %s WITH ARGS: %+v RAN\nOUTPUT: %s", t.Cwd, t.Cmd, t.Args, out)
 }
 
 func (tl taskList) Run() {
