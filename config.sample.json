@@ -8,7 +8,7 @@
             "tasks" : [
                 {
                     "cwd": "/home/user/hookah/",
-                    "cmd": "test.sh",
+                    "cmd": "./test.sh",
                     "args": ["prod", "dev"]
                 }
             ]
@@ -24,8 +24,8 @@
                 },
                 {
                     "cwd": "/home/user/hookah/",
-                    "cmd": "test.sh",
-                    "args": ["prod", "dev"]
+                    "cmd": "./deploy.sh",
+                    "args": ["prod"]
                 }
             ],
             "notify": {
