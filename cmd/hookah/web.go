@@ -85,7 +85,7 @@ func processHook(ctx webhooks.Context) {
 				)
 
 				err = tmpl.Execute(&buf, map[string]interface{}{
-					`hook`:   hook,
+					`hook`:   h,
 					`branch`: branch,
 				})
 				if err != nil {
