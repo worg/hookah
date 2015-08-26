@@ -45,10 +45,11 @@ type (
 	}
 )
 
-func (g *GitHub) Hook() CommonHook {
+func (g GitHub) Hook() CommonHook {
 	ch := CommonHook{
 		hook:    g.hook,
 		Repo:    g.Repository.repo,
+		Author:  g.Pusher,
 		Commits: make([]commit, len(g.Commits)),
 	}
 

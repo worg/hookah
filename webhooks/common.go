@@ -31,6 +31,7 @@ type (
 
 	CommonHook struct {
 		hook
+		Author  user
 		Repo    repo
 		Commits []commit
 	}

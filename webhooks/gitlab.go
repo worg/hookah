@@ -56,10 +56,11 @@ type (
 	}
 )
 
-func (g *GitLab) Hook() CommonHook {
+func (g GitLab) Hook() CommonHook {
 	return CommonHook{
 		hook:    g.hook,
 		Repo:    g.Repository.repo,
+		Author:  user{Name: g.UserName},
 		Commits: g.Commits,
 	}
 }
