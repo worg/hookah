@@ -1,4 +1,4 @@
-![Hoookah](https://dl.dropboxusercontent.com/u/7133562/personal_project/hookah/hookah.min.svg =150x)
+![Hoookah](https://dl.dropboxusercontent.com/u/7133562/personal_project/hookah/hookah.min.svg)
 
 # Hookah
 
