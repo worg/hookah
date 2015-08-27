@@ -19,7 +19,6 @@ type (
 		Added     []string      `json:"added"`
 		Committer user          `json:"committer"`
 		Distinct  bool          `json:"distinct"`
-		ID        string        `json:"id"`
 		Modified  []string      `json:"modified"`
 		Removed   []interface{} `json:"removed"`
 	}
