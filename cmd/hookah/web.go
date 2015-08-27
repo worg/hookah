@@ -15,8 +15,10 @@ const (
 	msgTmpl = `
 {{.hook.Author.Name}} pushed {{.hook.Commits | len}} commit[s] to {{.hook.Repo.Name}}:{{.branch}}
 {{range .hook.Commits}}
-    {{.ID |printf "%.7s"}}: {{.Message |printf "%.80s"}} — {{if .Author.Name}}{{.Author.Name}}{{else}}{{.Author.Username}}{{end}}
-{{end}}`
+    {{.ID |printf "%.7s"}}: {{.Message |printf "%.80s"}} — {{if .Author.Name}}{{.Author.Name}}{{else}}{{.Author.Username}}{{end}}{{/* 
+    no newline between commits
+*/}}{{end}}
+`
 )
 
 var (
