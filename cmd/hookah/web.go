@@ -50,10 +50,12 @@ func gitHandler(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Header.Get(`X-GitHub-Event`) {
 		case `push`:
-			http.Error(w, ``, http.StatusNotAcceptable)
-			return
+			break
 		case `ping`: // just return on ping
 			w.WriteHeader(http.StatusOK)
+			return
+		default:
+			http.Error(w, ``, http.StatusNotAcceptable)
 			return
 		}
 
@@ -71,7 +73,6 @@ func gitHandler(w http.ResponseWriter, r *http.Request) {
 func processHook(ctx webhooks.Context) {
 	h := ctx.Hook()
 	branch := strings.TrimPrefix(h.Ref, `refs/heads/`)
-
 	for _, r := range config.Repos {
 		go func(r repo) {
 			if r.Name != h.Repo.Name ||
