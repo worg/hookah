@@ -70,7 +70,7 @@ func main() {
 
 	address := sprintf("%s:%d", config.Host, config.Port)
 	log.Printf("Listening on %s/gitlab and %[1]s/github", address)
-	log.Fatal("ERROR SERVING: %+v", http.ListenAndServe(address, nil))
+	log.Fatal("ERROR SERVING: ", http.ListenAndServe(address, nil))
 }
 
 // Run method for task
