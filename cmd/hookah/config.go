@@ -20,6 +20,7 @@ func loadConf() {
 		testName = fmt.Sprintf("%s%s%s", *path, PS, cfgName)
 		if _, err = os.Stat(testName); err == nil {
 			decodeCfg(testName)
+			return
 		}
 	}
 
