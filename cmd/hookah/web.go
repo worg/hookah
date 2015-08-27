@@ -12,11 +12,11 @@ import (
 )
 
 const (
-	msgTmpl = `{{.hook.Author.Name}} pushed {{.hook.Commits | len}} commit[s] to {{.hook.Repo.Name}}:{{.branch}}
+	msgTmpl = `
+{{.hook.Author.Name}} pushed {{.hook.Commits | len}} commit[s] to {{.hook.Repo.Name}}:{{.branch}}
 {{range .hook.Commits}}
     {{.ID |printf "%.7s"}}: {{.Message |printf "%.80s"}} — {{if .Author.Name}}{{.Author.Name}}{{else}}{{.Author.Username}}{{end}}
-{{end}}
-`
+{{end}}`
 )
 
 var (
@@ -48,8 +48,12 @@ func gitHandler(w http.ResponseWriter, r *http.Request) {
 	case `github`:
 		var hook webhooks.GitHub
 
-		if r.Header.Get(`X-GitHub-Event`) != `push` {
+		switch r.Header.Get(`X-GitHub-Event`) {
+		case `push`:
 			http.Error(w, ``, http.StatusNotAcceptable)
+			return
+		case `ping`: // just return on ping
+			w.WriteHeader(http.StatusOK)
 			return
 		}
 
