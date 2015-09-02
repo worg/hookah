@@ -15,10 +15,9 @@ const (
 	msgTmpl = `
 {{.hook.Author.Name}} pushed {{.hook.Commits | len}} commit[s] to {{.hook.Repo.Name}}:{{.branch}}
 {{range .hook.Commits}}
-    {{.ID |printf "%.7s"}}: {{.Message |printf "%.80s"}} — {{if .Author.Name}}{{.Author.Name}}{{else}}{{.Author.Username}}{{end}}{{/* 
+    {{.ID |printf "%.7s"}}: {{ trimSpace .Message | printf "%.80s"  }}{{if gt (len .Message) 79 }}…{{end}} — {{if .Author.Name}}{{.Author.Name}}{{else}}{{.Author.Username}}{{end}}{{/* 
     no newline between commits
-*/}}{{end}}
-`
+*/}}{{end}}`
 )
 
 var (
@@ -26,7 +25,9 @@ var (
 )
 
 func init() {
-	tmpl = template.Must(template.New(`pushMsg`).Parse(msgTmpl))
+	tmpl = template.Must(template.New(`pushMsg`).Funcs(template.FuncMap{
+		`trimSpace`: strings.TrimSpace,
+	}).Parse(msgTmpl))
 }
 
 func gitHandler(w http.ResponseWriter, r *http.Request) {
@@ -96,18 +97,18 @@ func processHook(ctx webhooks.Context) {
 					`branch`: branch,
 				})
 				if err != nil {
-					log.Println("Template ERR:", err)
+					log.Println(`Template ERR:`, err)
 					return
 				}
 
 				if bot, err = telebot.NewBot(r.Notify.Telegram.Token); err != nil {
-					log.Println("Telegram ERR:", err)
+					log.Println(`Telegram ERR:`, err)
 					return
 				}
 
 				err = bot.SendMessage(telebot.User{ID: r.Notify.Telegram.ChatID}, string(buf.Bytes()), nil)
 				if err != nil {
-					log.Println("Telegram ERR:", err)
+					log.Println(`Telegram ERR:`, err)
 					return
 				}
 
