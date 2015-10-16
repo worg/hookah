@@ -2,7 +2,7 @@
 
 # Hookah
 
-A tool written in Go [golang] to handle webhook actions [trigger deployments, tests, etc] and
+A tool written in Go [golang] to handle GitHub and GitLab webhooks [trigger deployments, tests, etc] and
 send Telegram notifications
 
 
