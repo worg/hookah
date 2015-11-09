@@ -13,6 +13,7 @@ send Telegram notifications
 Assuming you have a working Go setup
 
 ```
+go get -u github.com/worg/hookah/cmd/hookah
 go install github.com/worg/hookah/cmd/hookah
 ```
 
