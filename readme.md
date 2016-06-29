@@ -6,7 +6,8 @@ A tool written in Go [golang] to handle GitHub and GitLab webhooks [trigger depl
 send Telegram notifications
 
 
-[![GoDoc](https://godoc.org/github.com/worg/hookah?status.svg)](https://godoc.org/github.com/worg/hookah)
+[![GoDoc](https://godoc.org/github.com/worg/hookah/webhooks?status.svg)](https://godoc.org/github.com/worg/hookah)
+[![Go Report Card](https://goreportcard.com/badge/github.com/worg/hookah)](https://goreportcard.com/report/github.com/worg/hookah)
 
 ## Installing 
 
