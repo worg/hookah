@@ -11,17 +11,11 @@ import (
 	"text/template"
 )
 
-const (
-	msgTmpl = `
-{{.hook.Author.Name}} pushed {{if eq (len .hook.Commits) 0 }}a new branch: {{.branch}}{{else}}{{.hook.Commits | len}} commit[s] to {{.hook.Repo.Name}}:{{.branch}}{{end}}
-{{range .hook.Commits}}
-    {{.ID |printf "%.7s"}}: {{ trimSpace .Message | printf "%.80s"  }}{{if gt (len .Message) 79 }}…{{end}} — {{if .Author.Name}}{{.Author.Name}}{{else}}{{.Author.Username}}{{end}}{{/* 
-    no newline between commits
-*/}}{{end}}`
-)
-
 var (
-	tmpl *template.Template
+	tmpl     *template.Template
+	sendOpts = telebot.SendOptions{
+		ParseMode: `Markdown`,
+	}
 )
 
 func init() {
@@ -106,7 +100,7 @@ func processHook(ctx webhooks.Context) {
 					return
 				}
 
-				err = bot.SendMessage(telebot.User{ID: r.Notify.Telegram.ChatID}, buf.String(), nil)
+				err = bot.SendMessage(telebot.User{ID: r.Notify.Telegram.ChatID}, buf.String(), &sendOpts)
 				if err != nil {
 					log.Println(`Telegram ERR:`, err)
 					return

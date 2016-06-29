@@ -3,8 +3,8 @@ package webhooks
 type (
 	// GitLab hook structure
 	GitLab struct {
-		hook
-		Commits           []commit   `json:"commits"`
+		Head
+		Commits           []Commit   `json:"commits"`
 		Kind              string     `json:"object_kind"`
 		ProjectID         int        `json:"project_id"`
 		Repository        gitLabRepo `json:"repository"`
@@ -16,7 +16,7 @@ type (
 	}
 
 	gitLabRepo struct {
-		repo
+		Repo
 		GitHttpURL      string `json:"git_http_url"`
 		GitSshURL       string `json:"git_ssh_url"`
 		VisibilityLevel int    `json:"visibility_level"`
@@ -38,7 +38,7 @@ type (
 		Description     string      `json:"description"`
 		ID              int         `json:"id"`
 		Iid             int         `json:"iid"`
-		LastCommit      commit      `json:"last_commit"`
+		LastCommit      Commit      `json:"last_commit"`
 		MergeStatus     string      `json:"merge_status"`
 		MilestoneID     string      `json:"milestone_id"`
 		Source          gitLabMerge `json:"source"`
@@ -56,11 +56,13 @@ type (
 	}
 )
 
+// Hook returns a CommonHook structure
+// to ease handing of basic data
 func (g GitLab) Hook() CommonHook {
 	return CommonHook{
-		hook:    g.hook,
-		Repo:    g.Repository.repo,
-		Author:  user{Name: g.UserName},
+		Head:    g.Head,
+		Repo:    g.Repository.Repo,
+		Author:  User{Name: g.UserName, Email: g.UserEmail},
 		Commits: g.Commits,
 	}
 }
