@@ -59,6 +59,9 @@ type (
 // Hook returns a CommonHook structure
 // to ease handing of basic data
 func (g GitLab) Hook() CommonHook {
+	// assign httpurl to repo
+	g.Repository.Repo.URL = g.Repository.GitHttpURL
+
 	return CommonHook{
 		Head:    g.Head,
 		Repo:    g.Repository.Repo,
