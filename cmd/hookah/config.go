@@ -9,6 +9,10 @@ import (
 	"strings"
 )
 
+const (
+	osPS = string(os.PathSeparator)
+)
+
 func loadConf() {
 	var (
 		err                  error
@@ -17,7 +21,7 @@ func loadConf() {
 	)
 
 	if *path != `.` {
-		testName = fmt.Sprintf("%s%s%s", *path, PS, cfgName)
+		testName = fmt.Sprintf("%s%s%s", *path, osPS, cfgName)
 		if _, err = os.Stat(testName); err == nil {
 			decodeCfg(testName)
 			return
@@ -25,14 +29,14 @@ func loadConf() {
 	}
 
 	if pwd, err = os.Getwd(); err != nil {
-		log.Fatal("ERR: %s", err)
+		log.Fatal(`ERR: `, err)
 	}
 
-	chunks := strings.Split(pwd, PS)
+	chunks := strings.Split(pwd, osPS)
 	cLen := len(chunks)
 
 	for i := range chunks {
-		testName = strings.Join(chunks[0:cLen-i], PS) + PS + cfgName
+		testName = strings.Join(chunks[0:cLen-i], osPS) + osPS + cfgName
 		if _, err = os.Stat(testName); err == nil {
 			configFile = testName
 			break
@@ -57,7 +61,7 @@ func decodeCfg(file string) {
 		log.Fatal(`Config file not found…`)
 	}
 
-	if err = json.Unmarshal(data, &config); err != nil {
+	if err = json.Unmarshal(data, &cfg); err != nil {
 		log.Fatal(`Error decoding file: `, err)
 	}
 }

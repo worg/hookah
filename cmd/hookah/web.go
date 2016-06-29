@@ -76,7 +76,7 @@ func gitHandler(w http.ResponseWriter, r *http.Request) {
 func processHook(ctx webhooks.Context) {
 	h := ctx.Hook()
 	branch := strings.TrimPrefix(h.Ref, `refs/heads/`)
-	for _, r := range config.Repos {
+	for _, r := range cfg.Repos {
 		go func(r repo) {
 			if r.Name != h.Repo.Name ||
 				(r.Branch != `*` && r.Branch != branch) {
@@ -106,7 +106,7 @@ func processHook(ctx webhooks.Context) {
 					return
 				}
 
-				err = bot.SendMessage(telebot.User{ID: r.Notify.Telegram.ChatID}, string(buf.Bytes()), nil)
+				err = bot.SendMessage(telebot.User{ID: r.Notify.Telegram.ChatID}, buf.String(), nil)
 				if err != nil {
 					log.Println(`Telegram ERR:`, err)
 					return

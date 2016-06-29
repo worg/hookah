@@ -10,7 +10,7 @@ import (
 )
 
 type (
-	Config struct {
+	config struct {
 		// host to listen on
 		Host string `json:"host"`
 		// port to listen on
@@ -50,12 +50,11 @@ type (
 const (
 	cfgName     = `config.json`
 	defaultPort = 8080
-	PS          = string(os.PathSeparator)
 )
 
 var (
+	cfg     config
 	path    = flag.String(`path`, `.`, `where to look for config file`)
-	config  Config
 	mux     = http.DefaultServeMux
 	sprintf = fmt.Sprintf //share sprintf across files
 )
@@ -68,7 +67,7 @@ func main() {
 	mux.HandleFunc(`/gitlab`, gitHandler)
 	mux.HandleFunc(`/github`, gitHandler)
 
-	address := sprintf("%s:%d", config.Host, config.Port)
+	address := sprintf("%s:%d", cfg.Host, cfg.Port)
 	log.Printf("Listening on %s/gitlab and %[1]s/github", address)
 	log.Fatal("ERROR SERVING: ", http.ListenAndServe(address, nil))
 }
