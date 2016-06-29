@@ -12,16 +12,21 @@ import (
 )
 
 var (
-	tmpl     *template.Template
+	tmpl *template.Template
+
+	// telegram bot send options
 	sendOpts = telebot.SendOptions{
 		ParseMode: `Markdown`,
+	}
+
+	// functions available on templates
+	tFuncs = template.FuncMap{
+		`trimSpace`: strings.TrimSpace,
 	}
 )
 
 func init() {
-	tmpl = template.Must(template.New(`pushMsg`).Funcs(template.FuncMap{
-		`trimSpace`: strings.TrimSpace,
-	}).Parse(msgTmpl))
+	tmpl = template.Must(template.New(`pushMsg`).Funcs(tFuncs).Parse(msgTmpl))
 }
 
 func gitHandler(w http.ResponseWriter, r *http.Request) {
@@ -70,6 +75,7 @@ func gitHandler(w http.ResponseWriter, r *http.Request) {
 func processHook(ctx webhooks.Context) {
 	h := ctx.Hook()
 	branch := strings.TrimPrefix(h.Ref, `refs/heads/`)
+
 	for _, r := range cfg.Repos {
 		go func(r repo) {
 			if r.Name != h.Repo.Name ||
