@@ -41,7 +41,7 @@ func gitHandler(w http.ResponseWriter, r *http.Request) {
 
 	decoder := json.NewDecoder(r.Body)
 
-	switch r.URL.EscapedPath() {
+	switch r.URL.Path {
 	case `/gitlab`:
 		var hook webhooks.GitLab
 
