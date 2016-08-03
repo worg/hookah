@@ -60,7 +60,7 @@ type (
 // to ease handing of basic data
 func (g GitLab) Hook() CommonHook {
 	// assign httpurl to repo
-	g.Repository.Repo.URL = g.Repository.GitHttpURL
+	g.Repository.Repo.URL = g.Repository.Homepage
 
 	return CommonHook{
 		Head:    g.Head,
