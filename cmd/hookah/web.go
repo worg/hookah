@@ -22,6 +22,10 @@ var (
 	// functions available on templates
 	tFuncs = template.FuncMap{
 		`trimSpace`: strings.TrimSpace,
+		// backtick message to avoid markdown parsing errors
+		`fmtCommit`: func(s string) string {
+			return "`" + s + "`"
+		},
 	}
 )
 
@@ -37,8 +41,8 @@ func gitHandler(w http.ResponseWriter, r *http.Request) {
 
 	decoder := json.NewDecoder(r.Body)
 
-	switch strings.TrimPrefix(r.URL.String(), `/`) {
-	case `gitlab`:
+	switch r.URL.EscapedPath() {
+	case `/gitlab`:
 		var hook webhooks.GitLab
 
 		if err := decoder.Decode(&hook); err != nil {
@@ -47,7 +51,7 @@ func gitHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		processHook(hook)
-	case `github`:
+	case `/github`:
 		var hook webhooks.GitHub
 
 		switch r.Header.Get(`X-GitHub-Event`) {
