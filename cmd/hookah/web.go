@@ -39,6 +39,8 @@ func gitHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Panicf("PATH: %+v", r.URL.Path)
+
 	decoder := json.NewDecoder(r.Body)
 
 	switch r.URL.EscapedPath() {
